@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "YyMu2hpLiQapq+NU5nI9Td4145LZR2GeotfmiG0OgQHRt7Pt+wd5PHaMKsRZaTNns64dovQhpVUiaOUDnnxdIg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\shaul\\Revature\\ShaulS-P1\\GroceryAppConsole\\GroceryAppConsole\\GroceryAppConsole.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\shaul\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\2.2.0\\microsoft.aspnetcore.webutilities.2.2.0.nupkg.sha512",
+    "C:\\Users\\shaul\\.nuget\\packages\\microsoft.extensions.primitives\\2.2.0\\microsoft.extensions.primitives.2.2.0.nupkg.sha512",
+    "C:\\Users\\shaul\\.nuget\\packages\\microsoft.net.http.headers\\2.2.0\\microsoft.net.http.headers.2.2.0.nupkg.sha512",
+    "C:\\Users\\shaul\\.nuget\\packages\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",
+    "C:\\Users\\shaul\\.nuget\\packages\\system.memory\\4.5.1\\system.memory.4.5.1.nupkg.sha512",
+    "C:\\Users\\shaul\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.1\\system.runtime.compilerservices.unsafe.4.5.1.nupkg.sha512",
+    "C:\\Users\\shaul\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

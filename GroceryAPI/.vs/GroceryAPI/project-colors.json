@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "7b4535cc-3d94-48ad-a1c5-dcfb14d2b9d6": {
+      "ProjectGuid": "7b4535cc-3d94-48ad-a1c5-dcfb14d2b9d6",
+      "DisplayName": "GroceryAPI",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
