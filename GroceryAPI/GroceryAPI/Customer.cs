@@ -12,9 +12,9 @@ namespace GroceryAPI
 
         private int customerId;
 
-        private string firstName;
+        private string firstName="";
 
-        private string lastName;
+        private string lastName="";
 
         public int CustomerId { get => customerId; set => customerId = value; }
         public string FirstName { get => firstName; set => firstName = value; }
@@ -36,10 +36,10 @@ namespace GroceryAPI
         {
             if (_repository is not null) _repository.AddNewCustomerAsync(this);
         }
-        public async Task<bool> SearchCustomersByName()
-        {
-            return _repository is null ? false : await _repository.SearchCustomersByNameAsync(this);
-        }
+//        public async Task<bool> SearchCustomersByName()
+  //      {
+    //        return _repository is null ? false : await _repository.SearchCustomersByNameAsync(this);
+      //  }
         /// <summary>
         /// display all order history of a customer
         /// </summary>

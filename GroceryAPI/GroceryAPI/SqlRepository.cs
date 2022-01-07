@@ -44,14 +44,20 @@ namespace GroceryAPI
             }
 
         }
-        public bool AddNewOrder(Order NewOrder)
+
+//        public async Task<int> AddNewOrderAsync(Order NewOrder)
+  //      {
+    //        return 3;
+      //  }
+
+        public async Task<int> AddNewOrderAsync(Order NewOrder)
         {
             try
             {
                 using SqlConnection connection = new(_connectionString);
-                connection.Open();
+                await connection.OpenAsync();
                 string cmdText = @"INSERT INTO dbo.StoreOrder (CustomerID,LocationId,orderTime) VALUES (@CustomerID,@LocationId,@orderTime);
-                                    SELECT SCOPE_IDENTITY() ;";
+                                        SELECT SCOPE_IDENTITY() ;";
                 using SqlCommand cmd = new(cmdText, connection);
                 cmd.Parameters.AddWithValue("@CustomerID", NewOrder.Customer.CustomerId);
                 cmd.Parameters.AddWithValue("@LocationId", NewOrder.Store.LocationId);
@@ -98,7 +104,7 @@ namespace GroceryAPI
                 //cmd.Parameters["@RETURN_VALUE"].Value
                 string rtn = (string)cmd4.Parameters["@Ret"].Value;
                 if (rtn == "1")
-                    return true;
+                    return OrderId;
                 else
                 {
                     Console.WriteLine(rtn);
@@ -106,19 +112,19 @@ namespace GroceryAPI
                     using SqlCommand cmd5 = new(cmdText, connection);
                     cmd5.Parameters.AddWithValue("@OrderID", OrderId);
                     cmd5.ExecuteNonQuery();
-                    return false;
+                    return 0;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
-            return false;
+            return 0;
         }
 
 
 
-        public async Task<bool> SearchCustomersByNameAsync(Customer findCustomer)
+        public async Task<int> SearchCustomersByNameAsync(Customer findCustomer)
         {
             try
             {
@@ -134,11 +140,10 @@ namespace GroceryAPI
                 cmd.Parameters.AddWithValue("@FirstName", findCustomer.FirstName);
                 cmd.Parameters.AddWithValue("@LastName", findCustomer.LastName);
                 using SqlDataReader reader = cmd.ExecuteReader();
-                bool Result = false;
+                int Result=0;
                 if (reader.Read())
                 {
-                    Result = true;
-                    findCustomer.CustomerId = reader.GetInt32(0);
+                    Result = reader.GetInt32(0);
                 }
                 connection.Close();
                 return Result;
@@ -147,15 +152,15 @@ namespace GroceryAPI
             {
                 Console.WriteLine(ex.ToString());
             }
-            return false;
+            return 0;
         }
 
-        public bool SearchProductByName(Product findProduct)
+        public async Task<Product> SearchProductByNameAsync(Product findProduct)
         {
             try
             {
                 using SqlConnection connection = new(_connectionString);
-                connection.Open();
+                await connection.OpenAsync();
 
                 using SqlCommand cmd = new(
                     @"SELECT ProductId,DefaultPrice 
@@ -165,21 +170,21 @@ namespace GroceryAPI
 
                 cmd.Parameters.AddWithValue("@ProductName", findProduct.ProductName);
                 using SqlDataReader reader = cmd.ExecuteReader();
-                bool Result = false;
+                //bool Result = false;
                 if (reader.Read())
                 {
-                    Result = true;
+                  //  Result = true;
                     findProduct.ProductId = reader.GetInt32(0);
                     findProduct.ProductPrice = reader.GetDouble(1);
                 }
                 connection.Close();
-                return Result;
+                return findProduct;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
-            return false;
+            return null;
         }
         public IEnumerable<Order> orderHistoryByStore(Stores FindStore)
         {
@@ -234,7 +239,7 @@ namespace GroceryAPI
             return null;
         }
 
-        public IEnumerable<Stores> DisplayStoreList()
+        public async Task<IEnumerable<Stores>>   DisplayStoreList()
         {
             try
             {
@@ -255,7 +260,7 @@ namespace GroceryAPI
             {
                 Console.WriteLine(ex.ToString());
             }
-            return null;
+            return (IEnumerable<Stores>)Task.FromResult<object>(null);
         }
         public bool SearchStoreByName(Stores findStore)
         {
@@ -288,8 +293,8 @@ namespace GroceryAPI
             return false;
         }
 
-
-        public Order SearchOrderById(int OrderId)
+        
+        public async Task<Order> SearchOrderByIdAsync(int OrderId)
         {
             try
             {

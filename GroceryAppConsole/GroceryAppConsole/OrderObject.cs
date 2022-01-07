@@ -6,50 +6,57 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace GroceryAPI
+namespace GroceryAppConsole
 {
-    /// <summary>
-    /// Order Record Update and insert data from Database
-    /// </summary>
-    public class Order
+    public  class OrderObject
     {
-        string storeLocation="";
+
+        string storeLocation;
         private int orderID;
         DateTime ordertime;
         double total;
-        List<OrderLines> ordersLines;//= new List<OrderLines>();
+        
         static readonly int maxQuantity = 100;
-        private Customer customer;
-        private Stores store;
-        private static IRepository? _repository;
-        public static IRepository? Repository { get => _repository; set => _repository = value; }
+        //private StoresObject store;
+        public StoresObject Store { get; set; }
 
-
-        public int CustomerId { get => Customer.CustomerId; set => Customer.CustomerId = value; }
-        public string StoreLocation { get => storeLocation; set => storeLocation = value; }
-        public Customer Customer { get => customer; set => customer = value; }
-        public Stores Store { get => store; set => store = value; }
-        public List<OrderLines> OrdersLines
+        //        private Customer customer;
+      //  public Customer Customer { get; set; }// { get => customer; set => customer = value; }
+        public OrderObject()
         {
-            get
-            {
-                if (ordersLines == null)
-                {
-                    ordersLines = new List<OrderLines>();
-                }
-                return ordersLines;
-            }
-
-            set
-            {
-                ordersLines = value;
-            }
+            this.Store = new StoresObject();
+        //   this.Customer = new Customer();
         }
-        public DateTime Ordertime { get => ordertime; set => ordertime = value; }
-        public int OrderID { get => orderID; set => orderID = value; }
-        public double Total { get => total; set => total = value; }
+        //List<OrderLines> ordersLines;//= new List<OrderLines>();
+        //public List<OrderLines> OrdersLines
+        //{
+        //    get
+        //    {
+        //        if (ordersLines == null)
+        //        {
+        //            ordersLines = new List<OrderLines>();
+        //        }
+        //        return ordersLines;
+        //    }
 
-        public static int MaxQuantity => maxQuantity;
+        //    set
+        //    {
+        //        ordersLines = value;
+        //    }
+        //}
+
+        //        private static IRepository? _repository;
+        //        [JsonIgnore] public static IRepository? Repository { get => _repository; set => _repository = value; }
+
+        //public static int MaxQuantity => maxQuantity;
+        //public int CustomerId { get => Customer.CustomerId; set => Customer.CustomerId = value; }
+        //public string StoreLocation { get => storeLocation; set => storeLocation = value; }
+
+        //       public DateTime Ordertime { get => ordertime; set => ordertime = value; }
+        //      public int OrderID { get => orderID; set => orderID = value; }
+        //        public double Total { get => total; set => total = value; }
+
+
 
 
         /// <summary>
@@ -115,41 +122,35 @@ namespace GroceryAPI
 
         //}
 
-        public Order()
-        {
-            this.customer = new Customer();
-        }
-            //  {
-         //   
+        //public OrderObject(Customer UpdateCustomer, Stores UpdateStore)
+        //{
+        //    if (UpdateCustomer is not null) customer = UpdateCustomer;
+        //    if (UpdateStore is not null) store = UpdateStore;
+        //    this.ordertime = DateTime.Now;
         //}
-        public Order(Customer UpdateCustomer, Stores UpdateStore)
-        {
-            if (UpdateCustomer is not null) customer = UpdateCustomer;
-            if (UpdateStore is not null) store = UpdateStore;
-            this.ordertime = DateTime.Now;
-        }
-        public Order(Customer UpdateCustomer, Stores UpdateStore, DateTime ordertime)
-        {
-            if (UpdateCustomer is not null) customer = UpdateCustomer;
-            if (UpdateStore is not null) store = UpdateStore;
-            this.ordertime = ordertime;
-        }
+        //public OrderObject(Customer UpdateCustomer, Stores UpdateStore, DateTime ordertime)
+        //{
+        //    if (UpdateCustomer is not null) customer = UpdateCustomer;
+        //    if (UpdateStore is not null) store = UpdateStore;
+        //    this.ordertime = ordertime;
+        //}
 
-        public Order(Customer UpdateCustomer, Stores UpdateStore, DateTime ordertime, double Total)
-        {
-            if (UpdateCustomer is not null) customer = UpdateCustomer;
-            if (UpdateStore is not null) store = UpdateStore;
-            this.Total = Total;
-            this.ordertime = ordertime;
-        }
-        public Order(Customer UpdateCustomer, Stores UpdateStore, DateTime ordertime, double Total, int orderID)
-        {
-            if (UpdateCustomer is not null) customer = UpdateCustomer;
-            if (UpdateStore is not null) store = UpdateStore;
-            this.Total = Total;
-            this.ordertime = ordertime;
-            this.orderID = orderID;
-        }
-
+        //public OrderObject(Customer UpdateCustomer, Stores UpdateStore, DateTime ordertime, double Total)
+        //{
+        //    if (UpdateCustomer is not null) customer = UpdateCustomer;
+        //    if (UpdateStore is not null) store = UpdateStore;
+        //    this.Total = Total;
+        //    this.ordertime = ordertime;
+        //}
+        //public OrderObject(Customer UpdateCustomer, Stores UpdateStore, DateTime ordertime, double Total, int orderID)
+        //{
+        //    if (UpdateCustomer is not null) customer = UpdateCustomer;
+        //    if (UpdateStore is not null) store = UpdateStore;
+        //    this.Total = Total;
+        //    this.ordertime = ordertime;
+        //    this.orderID = orderID;
+        //}
     }
+
+
 }

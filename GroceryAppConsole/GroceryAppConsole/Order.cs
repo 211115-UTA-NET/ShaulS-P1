@@ -9,25 +9,30 @@ namespace GroceryAppConsole
     /// <summary>
     /// Order Record Update and insert data from Database
     /// </summary>
+    public struct ReturnStruct
+    {
+        public string ErrMessage;
+        public int ReturnValue;
+    };
     public class Order
     {
-        string storeLocation;
+        string storeLocation="";
         private int orderID;
         DateTime ordertime;
         double total;
         List<OrderLines> ordersLines;//= new List<OrderLines>();
-        static readonly int maxQuantity = 100;
+        static readonly int maxQuantity = 10;
         private Customer customer;
         private Stores store;
-//        private static IRepository? _repository;
-//        public static IRepository? Repository { get => _repository; set => _repository = value; }
+        private static IGroceryAPI? _repository;
+        public static IGroceryAPI? Repository { get => _repository; set => _repository = value; }
         /// <summary>
         /// Search Order By Id returns Order Object
         /// </summary>
-        public static Order SearchOrderById(int OrderId)
+        public async static Task<Order> SearchOrderById(int OrderId)
         {
-            //return _repository is null ? null : _repository.SearchOrderById(OrderId);
-            return null;
+            return await _repository.SearchOrderByIdAsync(OrderId);
+            //return null;
         }
         /// <summary>
         /// Check Order Valid Quantity returns the error Message in strSummary
@@ -55,14 +60,16 @@ namespace GroceryAppConsole
         /// <summary>
         /// Add New Order with Validity check
         /// </summary>
-        public bool AddNewOrder(ref string strSummary)
+        public async Task<ReturnStruct> AddNewOrder(string strSummary)
         {
             bool result = false;
             result = this.CheckOrderValidQuantity(ref strSummary);
-//            if (result == true)
-  //              return _repository is null ? false : _repository.AddNewOrder(this);
-    //        else
-                return false;
+            ReturnStruct ret=new();
+            ret.ErrMessage = strSummary;
+            
+            if (result == true)
+                ret.ReturnValue = await _repository.SubmitOrderAsync(this);
+            return ret;
         }
         /// <summary>
         /// Display Details Order
@@ -85,6 +92,10 @@ namespace GroceryAppConsole
 
         }
 
+        public Order()
+        {
+            this.customer = new Customer();
+        }
 
         public Order(Customer UpdateCustomer, Stores UpdateStore)
         {

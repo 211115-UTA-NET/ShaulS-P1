@@ -83,7 +83,7 @@ namespace GroceryAppConsole
         {
             foreach (char c in s)
             {
-                if (!Char.IsLetter(c))
+                if (!Char.IsLetter(c) && c!=' ')
                     return false;
             }
             return true;
@@ -91,12 +91,12 @@ namespace GroceryAppConsole
         /// <summary>
         /// Console Read Order Line
         /// </summary>
-        public static void InputOrderLine(Order UserOrder)
+        public async static Task InputOrderLine(Order UserOrder)
         {
             do
             {
                 Product FindProduct = null;
-                SearchProduct(ref FindProduct);
+                FindProduct=await SearchProduct();
                 int Quantity = ConsoleIntegerReadLine("Enter Product Quantity(whole number):");
                 if (Quantity > 0)
                 {
@@ -109,23 +109,27 @@ namespace GroceryAppConsole
         /// <summary>
         /// Search Product
         /// </summary>
-        public static void SearchProduct(ref Product FindProduct)
+        public async static Task<Product> SearchProduct()
         {
             bool Result = false;
+            Product FindProduct;
             do
             {
                 FindProduct = new Product();
                 FindProduct.ProductName = ConsoleReadLine("enter product Name:");
-                Result = FindProduct.SearchProductByName();
-                if (Result)
+                FindProduct = await FindProduct.SearchProductByName();
+                if (FindProduct.ProductId != 0)
+                {
                     Console.WriteLine("product Exists");
+                    Result = true;
+                }
                 else
                     Console.WriteLine("product Not Found");
             }
             while (Result == false);
-
+            return FindProduct;
         }
-        public static async Task<bool> SearchCustomer(Customer FindCustomer)
+        public static async Task<Customer> SearchCustomer(Customer FindCustomer)
         {
             bool Result = false;
             bool? ResultNull = false;
@@ -133,22 +137,30 @@ namespace GroceryAppConsole
             FindCustomer = new Customer();
             FindCustomer.FirstName = ConsoleReadNameLine("enter Customer first Name:");
             FindCustomer.LastName = ConsoleReadNameLine("enter Customer Last Name:");
-            ResultNull = await  FindCustomer.SearchCustomersByNameAsync();
-            if (ResultNull==true)
+            FindCustomer.CustomerId  = await  FindCustomer.SearchCustomersByNameAsync();
+            if (FindCustomer.CustomerId != 0)
+            {
                 Console.WriteLine("Customer Exists");
+                Result = true;
+            }
             else
                 Console.WriteLine("Customer Not Found");
-            return Result;
+            return FindCustomer;
         }
 
-        public static void AddNewOrderWithValidation(Order CurrOrder)
+        public async static Task AddNewOrderWithValidation(Order CurrOrder)
         {
             string summuryErr = "";
-            if (CurrOrder.AddNewOrder(ref summuryErr) == true)
+            ReturnStruct Ret;
+            Ret = await CurrOrder.AddNewOrder(summuryErr);            
+            if (Ret.ReturnValue  != 0)
+            {
+                CurrOrder.OrderID=Ret.ReturnValue;
                 Console.WriteLine("New Order Added " + CurrOrder.OrderID);
+            }
             else
             {
-                Console.WriteLine(summuryErr);
+                Console.WriteLine(Ret.ErrMessage);
             }
         }        
         public async static Task Main(string[] args)
@@ -159,7 +171,20 @@ namespace GroceryAppConsole
                 Uri server = new("https://localhost:7258");
                 IGroceryAPI GroceryAPI = new GroceryAPI(server);
                 Customer.Repository = GroceryAPI;
+                Stores.Repository = GroceryAPI;
+                Product.Repository = GroceryAPI;
+                Order.Repository = GroceryAPI;
 
+                //Customer NewCustomer2 = new Customer();
+                //NewCustomer2.FirstName = "shaul";
+                //NewCustomer2.LastName = "stavi";
+                //NewCustomer2.CustomerId=await NewCustomer2.SearchCustomersByNameAsync();
+                //Stores CenterGrocery = new();
+                //CenterGrocery.LocationName = "test";
+                //Order NewOrder = new Order(NewCustomer2, CenterGrocery);
+                //NewOrder.Store = CenterGrocery;
+                // NewOrder.Customer = NewCustomer2;
+              //  await GroceryAPI.SubmitOrderAsync(NewOrder);
 
                 /*                
                                 string connectionString = File.ReadAllText("C:/Users/shaul/Revature/db.txt");
@@ -219,24 +244,25 @@ namespace GroceryAppConsole
                         switch (InputString)
                         {
                             case "1":
-                                Console.WriteLine(Stores.DisplayStoreList());
+                                Console.WriteLine(await Stores.DisplayStoreList());
                                 int StroeId = ConsoleIntegerReadLine("Enter Store ID: ");
                                 Stores UserStore = new Stores(StroeId);
                                 Console.WriteLine("Search Customer:");
                                 FindCustomer = new Customer();
-                                if (await SearchCustomer(FindCustomer))
+                                FindCustomer = await SearchCustomer(FindCustomer);
+                                if (FindCustomer.CustomerId!=0)
                                 {
-                                    Console.WriteLine(FindCustomer.CustomerId);
+                                 //   Console.WriteLine(FindCustomer.CustomerId);
                                     Order OrderUser = new Order(FindCustomer, UserStore);
-                                    InputOrderLine(OrderUser);
-                                    AddNewOrderWithValidation(OrderUser);
+                                    await InputOrderLine(OrderUser);
+                                    await AddNewOrderWithValidation(OrderUser);
                                 }
                                 break;
                             case "2":
                                 Customer NewCustomer = new Customer();
                                 NewCustomer.FirstName = ConsoleReadNameLine("enter Customer first Name:");
                                 NewCustomer.LastName = ConsoleReadNameLine("enter Customer Last Name:");
-                                if ( await NewCustomer.SearchCustomersByNameAsync() == false)
+                                if ( await NewCustomer.SearchCustomersByNameAsync() == 0)
                                     NewCustomer.AddNewCustomer();
                                 else
                                     Console.WriteLine("Customer Already Exists");
@@ -249,7 +275,7 @@ namespace GroceryAppConsole
                                 break;
                             case "4":
                                 int OrderId = ConsoleIntegerReadLine("Enter Order Number:");
-                                Order FindOrder = Order.SearchOrderById(OrderId);
+                                Order FindOrder = await Order.SearchOrderById(OrderId);
                                 Console.Write(FindOrder.DisplayDetailsOrder());
                                 break;
                             case "5":

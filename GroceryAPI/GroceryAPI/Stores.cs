@@ -11,7 +11,7 @@ namespace GroceryAPI
     /// </summary>
     public class Stores
     {
-        string locationName;
+        string locationName="";
 
         public Stores()
         { }
@@ -58,22 +58,23 @@ namespace GroceryAPI
 
 
         }
-        public static string DisplayStoreList()
-        {
-            IEnumerable<Stores>? allRecords = null;
-            if (_repository is not null) allRecords = _repository.DisplayStoreList();
+        //public static string DisplayStoreList()
+        //{
+        //    IEnumerable<Stores>? allRecords = null;
+        //    if (_repository is not null) allRecords = await _repository.DisplayStoreList();
 
-            var summary = new StringBuilder();
-            summary.AppendLine($"Store ID\tStore Name\t");
-            summary.AppendLine("---------------------------------------------------------------");
-            foreach (var record in allRecords)
-            {
-                summary.AppendLine($"{record.LocationId}\t{record.LocationName}");
-            }
-            summary.AppendLine("---------------------------------------------------------------");
+        //    var summary = new StringBuilder();
+        //    summary.AppendLine($"Store ID\tStore Name\t");
+        //    summary.AppendLine("---------------------------------------------------------------");
+        //    foreach (var record in allRecords)
+        //    {
+        //        summary.AppendLine($"{record.LocationId}\t{record.LocationName}");
+        //    }
+        //    summary.AppendLine("---------------------------------------------------------------");
 
-            return summary.ToString();
+        //    return summary.ToString();
 
-        }
+        //}
+    
     }
 }

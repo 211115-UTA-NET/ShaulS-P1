@@ -9,7 +9,13 @@ namespace GroceryAppConsole
 {
     public interface IGroceryAPI
     {
-        Task<bool?> SearchCustomersByNameAsync(string FirstName, string LastName);
+        
+        Task<Product> SearchProductByNameAsync(string ProductName);
+
+        Task<Order> SearchOrderByIdAsync(int OrderID);
+        Task<int> SearchCustomersByNameAsync(string FirstName, string LastName);
         Task<HttpStatusCode> SubmitCustomerAsync(Customer NewCustomer);
+        Task<List<Stores>> GetStoreListAsync();
+        Task<int> SubmitOrderAsync(Order NewOrder);
     }
 }

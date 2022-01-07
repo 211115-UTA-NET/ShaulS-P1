@@ -12,7 +12,7 @@ namespace GroceryAppConsole
     public class Product
     {
         int productId;
-        string productName;
+        string productName="";
         double productPrice;
         public Product()
         {
@@ -25,16 +25,22 @@ namespace GroceryAppConsole
         public int ProductId { get => productId; set => productId = value; }
         public string ProductName { get => productName; set => productName = value; }
         public double ProductPrice { get => productPrice; set => productPrice = value; }
-//        private static IRepository? _repository;
-  //      public static IRepository? Repository { get => _repository; set => _repository = value; }
+        private static IGroceryAPI? _repository;
+        public static IGroceryAPI? Repository { get => _repository; set => _repository = value; }
         /// <summary>
         /// Search Product By Name
         /// </summary>
 
-        public bool SearchProductByName()
+        //public async Task<Product> SearchProductByNameAsync(string ProductName)
+        public async Task<Product> SearchProductByName()
         {
-            //return _repository is null ? false : _repository.SearchProductByName(this);
-            return false;
+            Product tmpProduct= await _repository.SearchProductByNameAsync(this.ProductName);
+//            if (tmp != null)
+//
+  //              this = tmp;
+            return tmpProduct; 
+                //_repository is null ? false : await _repository.SearchProductByNameAsync(this.ProductName);
+            //return false;
         }
 
     }

@@ -14,14 +14,15 @@ namespace GroceryAPI
         
         Task AddNewCustomerAsync(Customer NewCustomer);
         //bool SearchCustomersByName(Customer NewCustomer);
-        public Task<bool> SearchCustomersByNameAsync(Customer findCustomer);
-        bool SearchProductByName(Product NewProduct);
+        public Task<int> SearchCustomersByNameAsync(Customer findCustomer);
+        Task<Product> SearchProductByNameAsync(Product NewProduct);
 
         bool SearchStoreByName(Stores NewStore);
         //void Save();
-        Order SearchOrderById(int OrderId);
-        bool AddNewOrder(Order NewOrder);
-        IEnumerable<Stores> DisplayStoreList();
+        Task<Order> SearchOrderByIdAsync(int OrderId);
+        public Task<int> AddNewOrderAsync(Order NewOrder);
+        
+        Task<IEnumerable<Stores>> DisplayStoreList();
         IEnumerable<Order> orderHistoryByStore(Stores FindStore);
         IEnumerable<Order> orderHistoryByCustomer(Customer FindCustomer);
     }

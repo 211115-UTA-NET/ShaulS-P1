@@ -11,7 +11,7 @@ namespace GroceryAppConsole
     /// </summary>
     public class Stores
     {
-        string locationName;
+        string locationName="";
 
         public Stores()
         { }
@@ -29,8 +29,8 @@ namespace GroceryAppConsole
             this.LocationId = LocationId;
         }
         int locationId;
-//        private static IRepository? _repository;
-//        public static IRepository? Repository { get => _repository; set => _repository = value; }
+        private static IGroceryAPI? _repository;
+        public static IGroceryAPI? Repository { get => _repository; set => _repository = value; }
 
         public string LocationName { get => locationName; set => locationName = value; }
         public int LocationId { get => locationId; set => locationId = value; }
@@ -59,10 +59,10 @@ namespace GroceryAppConsole
 
 
         }
-        public static string DisplayStoreList()
+        public async static Task<string> DisplayStoreList()
         {
             IEnumerable<Stores>? allRecords = null;
-            //if (_repository is not null) allRecords = _repository.DisplayStoreList();
+            if (_repository is not null) allRecords = await _repository.GetStoreListAsync();
 
             var summary = new StringBuilder();
             summary.AppendLine($"Store ID\tStore Name\t");

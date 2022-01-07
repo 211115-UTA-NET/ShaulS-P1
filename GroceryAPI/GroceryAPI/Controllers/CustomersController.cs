@@ -23,7 +23,7 @@ namespace GroceryAPI.Controllers
         
         // GET /api/customers/?firstname=shaul&lastname=stavi
         [HttpGet]
-        public async Task<ActionResult<bool?>> SearchCustomersByNameAsync([FromQuery, Required] string firstname, [FromQuery, Required] string lastname)
+        public async Task<ActionResult<int>> SearchCustomersByNameAsync([FromQuery, Required] string firstname, [FromQuery, Required] string lastname)
         {
             //if (string.IsNullOrEmpty(player))
             //{
@@ -31,7 +31,7 @@ namespace GroceryAPI.Controllers
             //}
             // ^ not needed- model validation can handle it!
             // more complex validation
-            bool CustomerExists=false;
+            int  CustomerExists=0;
             try
             {
                 CustomerExists = await _repository.SearchCustomersByNameAsync(new(firstname, lastname));

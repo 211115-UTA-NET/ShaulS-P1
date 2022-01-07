@@ -14,6 +14,9 @@ namespace GroceryAppConsole
         Product orderProduct;
         double orderPrice;
         int quantity;
+        public OrderLines()
+        {
+        }
         public OrderLines(Product orderProduct, int quantity)
         {
             this.orderProduct = orderProduct;

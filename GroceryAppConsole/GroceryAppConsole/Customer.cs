@@ -12,9 +12,9 @@ namespace GroceryAppConsole
 
         private int customerId;
 
-        private string firstName;
+        private string firstName="";
 
-        private string lastName;
+        private string lastName="";
 
         public int CustomerId { get => customerId; set => customerId = value; }
         public string FirstName { get => firstName; set => firstName = value; }
@@ -36,12 +36,12 @@ namespace GroceryAppConsole
         {
             if (_repository is not null) await _repository.SubmitCustomerAsync(this);
         }
-        public async  Task<bool> SearchCustomersByNameAsync()
+        public async  Task<int> SearchCustomersByNameAsync()
         {
             //return false;
-            bool? Result= await _repository.SearchCustomersByNameAsync(this.FirstName, this.LastName);
-                
-            return Result is null ? false : (bool)Result;
+            int Result= await _repository.SearchCustomersByNameAsync(this.FirstName, this.LastName);
+            return Result;
+            //return Result is null ? false : (bool)Result;
             //_repository is null ? false :
 
         }

@@ -12,7 +12,7 @@ namespace GroceryAPI
     public class Product
     {
         int productId;
-        string productName;
+        string productName="";
         double productPrice;
         public Product()
         {
@@ -31,10 +31,10 @@ namespace GroceryAPI
         /// Search Product By Name
         /// </summary>
 
-        public bool SearchProductByName()
-        {
-            return _repository is null ? false : _repository.SearchProductByName(this);
-        }
+//        public bool SearchProductByName()
+  //      {
+    //        return _repository is null ? false : _repository.SearchProductByName(this);
+      //  }
 
     }
 
