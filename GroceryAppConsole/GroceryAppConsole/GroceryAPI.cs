@@ -131,12 +131,55 @@ namespace GroceryAppConsole
                                                 //    throw new UnauthorizedException();
                                                 //}
 
+            //if (response.Content.Headers.ContentType?.MediaType != MediaTypeNames.Application.Json)
+            //{
+            //    throw new UnexpectedServerBehaviorException();
+            //}
+            Order rounds = null;
+            if (response.StatusCode != HttpStatusCode.NoContent )
+            { 
+                rounds = await response.Content.ReadFromJsonAsync<Order>();
+            }
+                //if (rounds is null)
+            //{
+        //        throw new UnexpectedServerBehaviorException();
+            //}
+
+            return rounds;
+            //return false;
+
+        }
+
+        public async Task<List<Order>> orderHistoryByStoreAsync(int locationid)
+        {
+            Dictionary<string, string> query = new() { ["locationid"] = locationid.ToString() };
+            string requestUri = QueryHelpers.AddQueryString("/api/Orders/HistoryByStore", query);            
+            HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            // telling the server we expect application/json reply. ("content negotiation" in http/rest)
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
+
+            HttpResponseMessage response;
+            try
+            {
+                response = await _httpClient.SendAsync(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new UnexpectedServerBehaviorException("network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode(); // throw if the status code is not 2xx
+                                                //if (response.StatusCode == 401)
+                                                //{
+                                                //    throw new UnauthorizedException();
+                                                //}
+
             if (response.Content.Headers.ContentType?.MediaType != MediaTypeNames.Application.Json)
             {
                 throw new UnexpectedServerBehaviorException();
             }
 
-            var rounds = await response.Content.ReadFromJsonAsync<Order>();
+            var rounds = await response.Content.ReadFromJsonAsync<List<Order>>();
             if (rounds is null)
             {
                 throw new UnexpectedServerBehaviorException();
@@ -147,6 +190,46 @@ namespace GroceryAppConsole
 
         }
 
+        
+        public async Task<List<Order>> orderHistoryByCustomerAsync(int customerid)
+        {
+            Dictionary<string, string> query = new() { ["customerid"] = customerid.ToString() };
+            string requestUri = QueryHelpers.AddQueryString("/api/Orders/HistoryByCustomer", query);
+            HttpRequestMessage request = new(HttpMethod.Get, requestUri);
+            // telling the server we expect application/json reply. ("content negotiation" in http/rest)
+            request.Headers.Accept.Add(new(MediaTypeNames.Application.Json));
+
+            HttpResponseMessage response;
+            try
+            {
+                response = await _httpClient.SendAsync(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new UnexpectedServerBehaviorException("network error", ex);
+            }
+
+            response.EnsureSuccessStatusCode(); // throw if the status code is not 2xx
+                                                //if (response.StatusCode == 401)
+                                                //{
+                                                //    throw new UnauthorizedException();
+                                                //}
+
+            if (response.Content.Headers.ContentType?.MediaType != MediaTypeNames.Application.Json)
+            {
+                throw new UnexpectedServerBehaviorException();
+            }
+
+            var rounds = await response.Content.ReadFromJsonAsync<List<Order>>();
+            if (rounds is null)
+            {
+                throw new UnexpectedServerBehaviorException();
+            }
+
+            return rounds;
+            //return false;
+
+        }
 
 
         public async Task<Product> SearchProductByNameAsync(string ProductName)
@@ -221,10 +304,10 @@ namespace GroceryAppConsole
             }
 
             var rounds = await response.Content.ReadFromJsonAsync<int>();
-            if (rounds == 0)
-            {
-                throw new UnexpectedServerBehaviorException();
-            }
+//            if (rounds == 0)
+  //          {
+    //            throw new UnexpectedServerBehaviorException();
+      //      }
 
             return rounds;
             //return false;

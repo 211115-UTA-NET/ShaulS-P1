@@ -40,10 +40,10 @@ namespace GroceryAppConsole
             return false;
 //            return _repository is null ? false : _repository.SearchStoreByName(this);
         }
-        public string orderHistoryByStore()
+        public async Task<string> orderHistoryByStore()
         {
             IEnumerable<Order>? allRecords = null;
-       //     if (_repository is not null) allRecords = _repository.orderHistoryByStore(this);
+            if (_repository is not null) allRecords = await _repository.orderHistoryByStoreAsync(this.LocationId);
 
             var summary = new StringBuilder();
             summary.AppendLine($"Order ID\tCustomer Name\tTotal\tOrder Date");

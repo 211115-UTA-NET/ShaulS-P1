@@ -39,25 +39,25 @@ namespace GroceryAPI
         {
             return _repository is null ? false : _repository.SearchStoreByName(this);
         }
-        public string orderHistoryByStore()
-        {
-            IEnumerable<Order>? allRecords = null;
-            if (_repository is not null) allRecords = _repository.orderHistoryByStore(this);
+        //public string orderHistoryByStore()
+        //{
+        //    IEnumerable<Order>? allRecords = null;
+        //    if (_repository is not null) allRecords = _repository.orderHistoryByStore(this);
 
-            var summary = new StringBuilder();
-            summary.AppendLine($"Order ID\tCustomer Name\tTotal\tOrder Date");
-            summary.AppendLine("---------------------------------------------------------------");
-            foreach (var record in allRecords)
-            {
-                summary.AppendLine($"{record.OrderID}\t\t{record.Customer.FirstName} {record.Customer.LastName}\t${record.Total}\t{record.Ordertime}");
-            }
-            summary.AppendLine("---------------------------------------------------------------");
+        //    var summary = new StringBuilder();
+        //    summary.AppendLine($"Order ID\tCustomer Name\tTotal\tOrder Date");
+        //    summary.AppendLine("---------------------------------------------------------------");
+        //    foreach (var record in allRecords)
+        //    {
+        //        summary.AppendLine($"{record.OrderID}\t\t{record.Customer.FirstName} {record.Customer.LastName}\t${record.Total}\t{record.Ordertime}");
+        //    }
+        //    summary.AppendLine("---------------------------------------------------------------");
 
-            return summary.ToString();
+        //    return summary.ToString();
 
 
 
-        }
+        //}
         //public static string DisplayStoreList()
         //{
         //    IEnumerable<Stores>? allRecords = null;

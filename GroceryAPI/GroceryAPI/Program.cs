@@ -1,7 +1,10 @@
 using GroceryAPI;
-string connectionString = await File.ReadAllTextAsync("C:/Users/shaul/revature/db.txt");
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+string connectionString = builder.Configuration.GetConnectionString("Grocery-DB-Connection");
+//string connectionString = await File.ReadAllTextAsync("C:/Users/shaul/revature/db.txt");
 
 // Add services to the container.
 

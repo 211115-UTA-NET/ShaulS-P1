@@ -44,25 +44,25 @@ namespace GroceryAPI
         /// display all order history of a customer
         /// </summary>
 
-        public string orderHistoryByCustomer()
-        {
-            IEnumerable<Order>? allRecords = null;
-            if (_repository is not null) allRecords = _repository.orderHistoryByCustomer(this);
+        //public async Task<string> orderHistoryByCustomer()
+        //{
+        //    IEnumerable<Order>? allRecords = null;
+        //    if (_repository is not null) allRecords = await _repository.orderHistoryByCustomerAsync(this.customerId );
 
-            var summary = new StringBuilder();
-            summary.AppendLine($"Order ID\tStore Name\tTotal\tOrder Date");
-            summary.AppendLine("---------------------------------------------------------------");
-            foreach (var record in allRecords)
-            {
-                summary.AppendLine($"{record.OrderID}\t\t{record.Store.LocationName} \t${record.Total}\t{record.Ordertime}");
-            }
-            summary.AppendLine("---------------------------------------------------------------");
+        //    var summary = new StringBuilder();
+        //    summary.AppendLine($"Order ID\tStore Name\tTotal\tOrder Date");
+        //    summary.AppendLine("---------------------------------------------------------------");
+        //    foreach (var record in allRecords)
+        //    {
+        //        summary.AppendLine($"{record.OrderID}\t\t{record.Store.LocationName} \t${record.Total}\t{record.Ordertime}");
+        //    }
+        //    summary.AppendLine("---------------------------------------------------------------");
 
-            return summary.ToString();
+        //    return summary.ToString();
 
 
 
-        }
+        //}
 
 
 

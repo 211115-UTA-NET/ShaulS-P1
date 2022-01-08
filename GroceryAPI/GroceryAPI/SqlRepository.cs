@@ -186,13 +186,13 @@ namespace GroceryAPI
             }
             return null;
         }
-        public IEnumerable<Order> orderHistoryByStore(Stores FindStore)
+        public async Task<IEnumerable<Order>> orderHistoryByStoreAsync(Stores FindStore)
         {
             try
             {
                 List<Order> result = new();
                 using SqlConnection connection = new(_connectionString);
-                connection.Open();
+                await connection.OpenAsync();
                 using SqlCommand cmd = new(
                     @"SELECT StoreOrder.*,Customer.FirstName,Customer.LastName FROM dbo.StoreOrder inner join dbo.Customer on StoreOrder.Customerid=Customer.Customerid
                 where StoreOrder.LocationId=@LocationId and IsApproved<>0",
@@ -212,19 +212,19 @@ namespace GroceryAPI
             return null;
         }
 
-        public IEnumerable<Order> orderHistoryByCustomer(Customer FindCustomer)
+        public async Task<IEnumerable<Order>> orderHistoryByCustomer(int FindCustomer)
         {
             try
             {
                 List<Order> result = new();
                 using SqlConnection connection = new(_connectionString);
-                connection.Open();
+                await connection.OpenAsync();
                 using SqlCommand cmd = new(
                     @"SELECT StoreOrder.*,Customer.FirstName,Customer.LastName,StoreLocation.LocationName FROM dbo.StoreOrder inner join dbo.Customer on StoreOrder.Customerid=Customer.Customerid
                                                                                                inner join dbo.StoreLocation on StoreOrder.LocationId=StoreLocation.LocationId                          
                 where StoreOrder.CustomerId=@CustomerId and IsApproved<>0",
                     connection);
-                cmd.Parameters.AddWithValue("@CustomerId", FindCustomer.CustomerId);
+                cmd.Parameters.AddWithValue("@CustomerId", FindCustomer);
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -324,6 +324,7 @@ namespace GroceryAPI
                         customer = new((string)reader["FirstName"], (string)reader["LastName"]);
                         stores = new((string)reader["LocationName"]);
                         tempOrder = new(customer, stores, (DateTime)reader["orderTime"], (double)reader["Total"]);
+                        tempOrder.OrderID = OrderId;
                         FirstLine = false;
                     }
                     tempOrder.OrdersLines.Add(new(new((string)reader["ProductName"]), (int)reader["Quantity"], (double)reader["Price"]));

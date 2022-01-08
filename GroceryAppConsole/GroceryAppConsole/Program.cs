@@ -156,11 +156,13 @@ namespace GroceryAppConsole
             if (Ret.ReturnValue  != 0)
             {
                 CurrOrder.OrderID=Ret.ReturnValue;
-                Console.WriteLine("New Order Added " + CurrOrder.OrderID);
+                await Console.Out.WriteLineAsync("New Order Added " + CurrOrder.OrderID);
+                
             }
             else
             {
-                Console.WriteLine(Ret.ErrMessage);
+                await Console.Out.WriteLineAsync(Ret.ErrMessage);
+                //Console.Out.WriteLineAsync(Ret.ErrMessage);
             }
         }        
         public async static Task Main(string[] args)
@@ -168,12 +170,30 @@ namespace GroceryAppConsole
             try
             {
 
-                Uri server = new("https://localhost:7258");
+            //Uri server = new("https://localhost:7258");                                
+                Uri server = new("https://groceryapishaul.azurewebsites.net");
                 IGroceryAPI GroceryAPI = new GroceryAPI(server);
                 Customer.Repository = GroceryAPI;
                 Stores.Repository = GroceryAPI;
                 Product.Repository = GroceryAPI;
                 Order.Repository = GroceryAPI;
+
+
+                Stores CenterGrocery = new("Center Grocery",2);                
+                Product Milk = new("Milk");
+                Milk=await Milk.SearchProductByName();
+                Product Bread = new("Bread");
+                Bread=await Bread.SearchProductByName();
+                Product Candy = new("Candy");
+                Candy=await Candy.SearchProductByName();
+
+                Customer Customer1 = new Customer("Yarden", "Stavi");
+                Customer1.CustomerId = await Customer1.SearchCustomersByNameAsync();
+                if (Customer1.CustomerId == 0) Customer1.AddNewCustomer();
+
+                Order Order1 = new(Customer1, CenterGrocery, new DateTime(2021, 12, 10));
+                Order1.OrdersLines = new List<OrderLines> { new(Milk, 3), new(Bread, 2) };
+                await AddNewOrderWithValidation(Order1);
 
                 //Customer NewCustomer2 = new Customer();
                 //NewCustomer2.FirstName = "shaul";
@@ -184,7 +204,7 @@ namespace GroceryAppConsole
                 //Order NewOrder = new Order(NewCustomer2, CenterGrocery);
                 //NewOrder.Store = CenterGrocery;
                 // NewOrder.Customer = NewCustomer2;
-              //  await GroceryAPI.SubmitOrderAsync(NewOrder);
+                //  await GroceryAPI.SubmitOrderAsync(NewOrder);
 
                 /*                
                                 string connectionString = File.ReadAllText("C:/Users/shaul/Revature/db.txt");
@@ -276,19 +296,23 @@ namespace GroceryAppConsole
                             case "4":
                                 int OrderId = ConsoleIntegerReadLine("Enter Order Number:");
                                 Order FindOrder = await Order.SearchOrderById(OrderId);
-                                Console.Write(FindOrder.DisplayDetailsOrder());
+                                if (FindOrder is null)
+                                    Console.Write("Order Not Found");
+                                else
+                                    Console.Write(FindOrder.DisplayDetailsOrder());
                                 break;
                             case "5":
-                                Console.WriteLine(Stores.DisplayStoreList());
+                                Console.WriteLine(await Stores.DisplayStoreList());
                                 int StroeId2 = ConsoleIntegerReadLine("Enter Store ID: ");
                                 Stores UserStore2 = new Stores(StroeId2);
-                                Console.Write(UserStore2.orderHistoryByStore());
+                                Console.Write(await UserStore2.orderHistoryByStore());
                                 break;
                             case "6":
                                 Console.WriteLine("Search Customer:");
-                                FindCustomer = new Customer(); ;
-                                SearchCustomer(FindCustomer);
-                                Console.Write(FindCustomer.orderHistoryByCustomer());
+                                FindCustomer = new Customer();
+                                FindCustomer=await SearchCustomer(FindCustomer);
+                                if (FindCustomer.CustomerId!=0)
+                                Console.Write(await FindCustomer.orderHistoryByCustomer());
                                 break;
                             default:
                                 Console.WriteLine("Not a Vaild Line Menu Number");

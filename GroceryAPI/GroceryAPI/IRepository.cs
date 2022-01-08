@@ -23,8 +23,8 @@ namespace GroceryAPI
         public Task<int> AddNewOrderAsync(Order NewOrder);
         
         Task<IEnumerable<Stores>> DisplayStoreList();
-        IEnumerable<Order> orderHistoryByStore(Stores FindStore);
-        IEnumerable<Order> orderHistoryByCustomer(Customer FindCustomer);
+        Task<IEnumerable<Order>> orderHistoryByStoreAsync(Stores FindStore);        
+        Task<IEnumerable<Order>> orderHistoryByCustomer(int FindCustomer);
     }
 
 }

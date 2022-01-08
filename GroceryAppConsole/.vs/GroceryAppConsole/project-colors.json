@@ -10,7 +10,12 @@
       "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
       "DisplayName": "Miscellaneous Files",
       "ColorIndex": -1
+    },
+    "d5dce361-9d5d-4936-a394-0718796ef026": {
+      "ProjectGuid": "d5dce361-9d5d-4936-a394-0718796ef026",
+      "DisplayName": "GroceryAppTest",
+      "ColorIndex": 1
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 2
 }

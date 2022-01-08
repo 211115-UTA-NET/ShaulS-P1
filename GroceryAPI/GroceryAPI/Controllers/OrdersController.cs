@@ -56,6 +56,58 @@ namespace GroceryAPI.Controllers
             return OrderExists;
         }
 
+        [HttpGet]
+        [Route("HistoryByCustomer")]
+        public async Task<ActionResult<IEnumerable<Order>>> orderHistoryByCustomerAsync([FromQuery, Required] int customerid)
+        {
+
+            IEnumerable<Order> oOrders = null;
+
+            try
+            {
+                oOrders = await _repository.orderHistoryByCustomer(customerid);
+            }
+            catch (SqlException ex)
+            {
+                // bad! the exception is not logged, and asp.net was going to log it and return 500 anyway
+                // (^ when the catch block just returned 500)
+                // you only need to catch exceptions where either you want to do something besides a 500 error
+                //     or you want to log the exception with some more context
+                //                _logger.LogError(ex, "sql error while getting rounds of {player}", player);
+                return StatusCode(500);
+            }
+
+            return oOrders.ToList();
+
+        }
+
+
+
+        [HttpGet]
+        [Route("HistoryByStore")]
+        public async Task<ActionResult<IEnumerable<Order>>> orderHistoryByStoreAsync(int locationid)
+        {
+
+            IEnumerable<Order> oOrders=null;
+
+            try
+            {
+                oOrders = await _repository.orderHistoryByStoreAsync(new Stores(locationid));
+            }
+            catch (SqlException ex)
+            {
+                // bad! the exception is not logged, and asp.net was going to log it and return 500 anyway
+                // (^ when the catch block just returned 500)
+                // you only need to catch exceptions where either you want to do something besides a 500 error
+                //     or you want to log the exception with some more context
+                //                _logger.LogError(ex, "sql error while getting rounds of {player}", player);
+                return StatusCode(500);
+            }
+
+            return oOrders.ToList();
+        }
+
+
 
 
     }

@@ -17,5 +17,8 @@ namespace GroceryAppConsole
         Task<HttpStatusCode> SubmitCustomerAsync(Customer NewCustomer);
         Task<List<Stores>> GetStoreListAsync();
         Task<int> SubmitOrderAsync(Order NewOrder);
+        Task<List<Order>> orderHistoryByStoreAsync(int locationid);
+        Task<List<Order>> orderHistoryByCustomerAsync(int customerid);
+
     }
 }

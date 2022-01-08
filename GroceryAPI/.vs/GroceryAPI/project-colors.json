@@ -5,7 +5,12 @@
       "ProjectGuid": "7b4535cc-3d94-48ad-a1c5-dcfb14d2b9d6",
       "DisplayName": "GroceryAPI",
       "ColorIndex": 0
+    },
+    "921884f4-176d-46d5-8291-8e8a56f8a909": {
+      "ProjectGuid": "921884f4-176d-46d5-8291-8e8a56f8a909",
+      "DisplayName": "GroceryAPITest",
+      "ColorIndex": 1
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 2
 }
