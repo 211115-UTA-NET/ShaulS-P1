@@ -32,7 +32,7 @@ namespace GroceryAppConsole
         /// <summary>
         /// Add New Customer Record To The Database 
         /// </summary>
-        public async void AddNewCustomer()
+        public async Task AddNewCustomer()
         {
             if (_repository is not null) await _repository.SubmitCustomerAsync(this);
         }

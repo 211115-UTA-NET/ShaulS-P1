@@ -189,7 +189,7 @@ namespace GroceryAppConsole
 
                 Customer Customer1 = new Customer("Yarden", "Stavi");
                 Customer1.CustomerId = await Customer1.SearchCustomersByNameAsync();
-                if (Customer1.CustomerId == 0) Customer1.AddNewCustomer();
+                if (Customer1.CustomerId == 0) await Customer1.AddNewCustomer();
 
                 Order Order1 = new(Customer1, CenterGrocery, new DateTime(2021, 12, 10));
                 Order1.OrdersLines = new List<OrderLines> { new(Milk, 3), new(Bread, 2) };
@@ -283,7 +283,7 @@ namespace GroceryAppConsole
                                 NewCustomer.FirstName = ConsoleReadNameLine("enter Customer first Name:");
                                 NewCustomer.LastName = ConsoleReadNameLine("enter Customer Last Name:");
                                 if ( await NewCustomer.SearchCustomersByNameAsync() == 0)
-                                    NewCustomer.AddNewCustomer();
+                                    await NewCustomer.AddNewCustomer();
                                 else
                                     Console.WriteLine("Customer Already Exists");
                                 break;
@@ -291,7 +291,7 @@ namespace GroceryAppConsole
                             case "3":
                                 Console.WriteLine("Search Customer:");
                                 FindCustomer = new Customer();
-                                SearchCustomer(FindCustomer);
+                                await SearchCustomer(FindCustomer);
                                 break;
                             case "4":
                                 int OrderId = ConsoleIntegerReadLine("Enter Order Number:");
