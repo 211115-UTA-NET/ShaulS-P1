@@ -19,7 +19,7 @@ jobs:
       run: |
         docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASS
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag apiConsole:$(date +%s)
+      run: docker build . --file Dockerfile --tag apiconsole:$(date +%s)
     
     - name: Docker Push
       run: docker push ${{secrets.DOCKERHUB_USERNAME}}/groceryconsole
