@@ -21,7 +21,7 @@ namespace GroceryAppConsole
         DateTime ordertime;
         double total;
         List<OrderLines> ordersLines;//= new List<OrderLines>();
-        static readonly int maxQuantity = 10;
+        static readonly int maxQuantity = 100;
         private Customer customer;
         private Stores store;
         private static IGroceryAPI? _repository;
