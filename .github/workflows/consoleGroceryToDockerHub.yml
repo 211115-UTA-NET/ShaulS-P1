@@ -11,15 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
     - uses: actions/checkout@v2
     - name: docker login
+      working-directory: ./GroceryAppConsole/GroceryAppConsole
       env:
           DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
           DOCKERHUB_PASS: ${{secrets.DOCKERHUB_PASS}}
       run: |
         docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASS
     - name: Build the Docker image
-      run: docker build . --file ./GroceryAppConsole/GroceryAppConsole/Dockerfile --tag apiconsole:$(date +%s)
+      run: docker build . --file ./Dockerfile --tag apiconsole:$(date +%s)
     
     - name: Docker Push
       run: docker push ${{secrets.DOCKERHUB_USERNAME}}/groceryconsole
